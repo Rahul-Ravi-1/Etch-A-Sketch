@@ -1,7 +1,13 @@
 const container = document.querySelector(".container");
 const clearBtn = document.querySelector("#clearBtn");
 const randomBtn = document.querySelector("#randomBtn");
+const setSizeBtn = document.querySelector("#setSizeBtn");
 let useRandomColor = false;
+let size = 16;
+
+let mouseDown = false;
+document.body.onmousedown = () => (mouseDown = true);
+document.body.onmouseup = () => (mouseDown = false);
 
 function generateRandomRgbColor() {
   // Generate random integers between 0 and 255 (inclusive) for each color channel
@@ -14,9 +20,11 @@ function generateRandomRgbColor() {
 }
 
 function handlePixelHover(pixelDiv) {
-  pixelDiv.style.backgroundColor = useRandomColor
-    ? generateRandomRgbColor()
-    : "black";
+  if (useRandomColor) {
+    pixelDiv.style.backgroundColor = generateRandomRgbColor();
+  } else {
+    pixelDiv.style.backgroundColor = "black";
+  }
 }
 
 if (container) {
@@ -25,7 +33,14 @@ if (container) {
       const pixelDiv = document.createElement("div");
       pixelDiv.style.backgroundColor = "white";
       pixelDiv.classList.add("pixel");
-      pixelDiv.addEventListener("mouseenter", () => handlePixelHover(pixelDiv));
+      pixelDiv.addEventListener("mousedown", () => {
+        handlePixelHover(pixelDiv);
+      });
+      pixelDiv.addEventListener("mouseover", () => {
+        if (mouseDown) {
+          handlePixelHover(pixelDiv);
+        }
+      });
       container.appendChild(pixelDiv);
     }
   }
@@ -46,3 +61,21 @@ if (randomBtn) {
   });
 }
 
+if (setSizeBtn) {
+  setSizeBtn.addEventListener("click", () => {
+    const size = prompt("Enter the size of the grid (1-100):");
+    if (size >= 1 && size <= 100) {
+      createGrid(size);
+    }
+  });
+}
+
+function createGrid() {
+  for (let x = 0; x < size; x++) {
+    for (let y = 0; y < size; y++) {
+      const pixelDiv = document.createElement("div");
+      pixelDiv.style.backgroundColor = "white";
+      pixelDiv.classList.add("pixel");
+    }
+  }
+}
