@@ -28,22 +28,7 @@ function handlePixelHover(pixelDiv) {
 }
 
 if (container) {
-  for (let x = 0; x < 16; x++) {
-    for (let y = 0; y < 16; y++) {
-      const pixelDiv = document.createElement("div");
-      pixelDiv.style.backgroundColor = "white";
-      pixelDiv.classList.add("pixel");
-      pixelDiv.addEventListener("mousedown", () => {
-        handlePixelHover(pixelDiv);
-      });
-      pixelDiv.addEventListener("mouseover", () => {
-        if (mouseDown) {
-          handlePixelHover(pixelDiv);
-        }
-      });
-      container.appendChild(pixelDiv);
-    }
-  }
+  createGrid(size);
 }
 
 if (clearBtn) {
@@ -70,12 +55,27 @@ if (setSizeBtn) {
   });
 }
 
-function createGrid() {
+function createGrid(size) {
+  container.innerHTML = "";
+  const containerSize = 320;
+  const pixelSize = containerSize/size;
+
   for (let x = 0; x < size; x++) {
     for (let y = 0; y < size; y++) {
       const pixelDiv = document.createElement("div");
       pixelDiv.style.backgroundColor = "white";
+      pixelDiv.style.width = `${pixelSize}px`
+      pixelDiv.style.height = `${pixelSize}px`;
       pixelDiv.classList.add("pixel");
+      pixelDiv.addEventListener("mousedown", () => {
+        handlePixelHover(pixelDiv);
+      });
+      pixelDiv.addEventListener("mouseover", () => {
+        if (mouseDown) {
+          handlePixelHover(pixelDiv);
+        }
+      });
+      container.appendChild(pixelDiv);
     }
   }
 }
