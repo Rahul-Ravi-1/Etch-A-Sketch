@@ -1,10 +1,13 @@
 const container = document.querySelector(".container");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 const clearBtn = document.querySelector("#clearBtn");
 const randomBtn = document.querySelector("#randomBtn");
 const setSizeBtn = document.querySelector("#setSizeBtn");
 let useRandomColor = false;
+const CANVAS_SIZE = 512;
 let size = 16;
-
+let grid = [];
 let mouseDown = false;
 document.body.onmousedown = () => (mouseDown = true);
 document.body.onmouseup = () => (mouseDown = false);
@@ -55,7 +58,25 @@ if (setSizeBtn) {
   });
 }
 
-function createGrid(size) {
+function createGrid(newSize) {
+  size = newSize;
+  canvas.width = CANVAS_SIZE;
+  canvas.height = CANVAS_SIZE;
+
+  grid = Array.from({ length: size }, () => Array(size).fill("#ffffff"));
+  redrawCanvas();
+}
+function redrawCanvas() {
+  const pixelSize = CANVAS_SIZE / size;
+ 
+  for (let x = 0; x < size; x++) {
+    for (let y = 0; y < size; y++) {
+      ctx.fillStyle = grid[x][y];
+      ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+    }
+  }
+}
+  /* Old code that utilized divs
   container.innerHTML = "";
   const containerSize = 320;
   const pixelSize = containerSize/size;
@@ -77,5 +98,4 @@ function createGrid(size) {
       });
       container.appendChild(pixelDiv);
     }
-  }
-}
+  }*/
