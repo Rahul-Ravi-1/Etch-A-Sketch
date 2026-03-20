@@ -71,6 +71,7 @@ function redrawCanvas() {
     }
   }
 }
+//sadfasdhfkdasf
 
 function setPixel(x, y, color){
   if( x < 0 || x >= size || y < 0 || y >= size){
